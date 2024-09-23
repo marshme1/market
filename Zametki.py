@@ -7,31 +7,70 @@ NOTES_FILE = 'notes.json'
 
 # Функция для загрузки заметок из файла
 def load_notes():
-    pass
+    if not os.path.exists(NOTES_FILE):
+        return []
+    with open(NOTES_FILE, 'r') as file:
+        return json.load(file)
 
 # Функция для сохранения заметок в файл
 def save_notes(notes):
-    pass
+    with open(NOTES_FILE, 'w') as file:
+        json.dump(notes, file, indent=4)
 
 # Функция для добавления заметки
 def add_note():
-    pass
+    title = input("Введите заголовок заметки: ")
+    content = input("Введите содержание заметки: ")
+    timestamp = datetime.now().isoformat()  # Получаем текущее время
+    notes = load_notes()
+    notes.append({
+        'title': title,
+        'content': content,
+        'timestamp': timestamp
+    })
+    save_notes(notes)
+    print("Заметка добавлена!")
 
 # Функция для просмотра всех заметок
 def view_notes():
-    pass
+    notes = load_notes()
+    for index, note in enumerate(notes):
+        print(f"{index + 1}. {note['title']} (создано: {note['timestamp']})")
+        print(f"   {note['content']}n")
 
 # Функция для изменения заметки
 def edit_note():
-    pass
+    view_notes()
+    note_index = int(input("Введите номер заметки для редактирования: ")) - 1
+    notes = load_notes()
+    if 0 <= note_index < len(notes):
+        new_title = input("Введите новый заголовок: ")
+        new_content = input("Введите новое содержание: ")
+        notes[note_index]['title'] = new_title
+        notes[note_index]['content'] = new_content
+        save_notes(notes)
+        print("Заметка изменена!")
+    else:
+        print("Неверный номер заметки.")
 
 # Функция для удаления заметки
 def delete_note():
-    pass
+    view_notes()
+    note_index = int(input("Введите номер заметки для удаления: ")) - 1
+    notes = load_notes()
+    if 0 <= note_index < len(notes):
+        notes.pop(note_index)
+        save_notes(notes)
+        print("Заметка удалена!")
+    else:
+        print("Неверный номер заметки.")
 
 # Функция для сортировки заметок по времени
 def sort_notes():
-    pass
+    notes = load_notes()
+    notes.sort(key=lambda x: x['timestamp'])  # Сортируем по времени создания
+    save_notes(notes)
+    print("Заметки отсортированы по времени!")
 
 # Главное меню
 def main():
