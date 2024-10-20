@@ -3,7 +3,7 @@ import os
 from datetime import datetime
 
 # Имя файла, в который будут сохраняться заметки
-NOTES_FILE = 'notes.json'
+NOTES_FILE = 'notes.json'  
 
 # Функция для загрузки заметок из файла
 def load_notes():
